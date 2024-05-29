@@ -1,0 +1,52 @@
+import scipy.io.wavfile as wavfile
+import scipy
+import scipy.fftpack as fftpk
+import numpy as np
+from matplotlib import pyplot as plt
+
+# 오디오 파일 1 읽기
+s_rate_1, signal_1 = wavfile.read("느리게.wav")
+
+# 주파수 영역 변환 1
+FFT_1 = abs(scipy.fft.fft(signal_1))
+freqs_1 = fftpk.fftfreq(len(FFT_1), (1.0 / s_rate_1))
+
+# 그래프 1: 주파수 영역 그래프 1
+plt.subplot(2, 2, 1)
+plt.plot(freqs_1[range(len(FFT_1)//2)], FFT_1[range(len(FFT_1)//2)])
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Amplitude")
+plt.title("Frequency Domain - Audio slow")
+
+# 그래프 2: 원시 오디오 신호 그래프 1
+plt.subplot(2, 2, 2)
+plt.plot(signal_1)
+plt.xlabel("Time")
+plt.ylabel("Amplitude")
+plt.title("Time Domain - Audio slow")
+
+# 오디오 파일 2 읽기
+s_rate_2, signal_2 = wavfile.read("빠르게.wav")
+
+# 주파수 영역 변환 2
+FFT_2 = abs(scipy.fft.fft(signal_2))
+freqs_2 = fftpk.fftfreq(len(FFT_2), (1.0 / s_rate_2))
+
+# 그래프 3: 주파수 영역 그래프 2
+plt.subplot(2, 2, 3)
+plt.plot(freqs_2[range(len(FFT_2)//2)], FFT_2[range(len(FFT_2)//2)])
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Amplitude")
+plt.title("Frequency Domain - fast")
+plt.yticks(np.arange(0, max(FFT_2[range(len(FFT_2)//2)]) + 5000, 5000))  # 변경된 부분
+
+# 그래프 4: 원시 오디오 신호 그래프 2
+plt.subplot(2, 2, 4)
+plt.plot(signal_2)
+plt.xlabel("Time")
+plt.ylabel("Amplitude")
+plt.title("Time Domain – fast")
+
+# 그래프 표시
+plt.tight_layout()
+plt.show()
